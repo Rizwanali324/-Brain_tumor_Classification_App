@@ -24,7 +24,7 @@ def predict(image):
     return predictions
 
 # Define the directory containing subfolders with class names
-base_dir = r'Brain_tumor_Classification_App\test_images'
+base_dir = 'test_images'
 
 # Get the list of subfolders (each representing a class)
 class_folders = [os.path.join(base_dir, folder) for folder in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, folder))]
