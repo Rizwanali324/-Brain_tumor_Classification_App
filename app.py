@@ -72,7 +72,7 @@ def main():
             predicted_class_idx = np.argmax(predictions)
 
             # Define class names (ensure it matches your model's output)
-            class_names = ['Glioma', 'Meningioma', 'No Tumor', 'Pituitary']
+            class_names = ['No Tumor', 'Glioma', 'Meningioma', 'Pituitary']
 
             # Check if predicted_class_idx is within bounds
             if 0 <= predicted_class_idx < len(class_names):
