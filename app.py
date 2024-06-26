@@ -49,6 +49,11 @@ def display_first_images(class_folders):
 
 # Define Streamlit app
 def main():
+    # Streamlit app setup
+    st.set_page_config(page_title="Brain Tumor Classification", page_icon=":brain:", layout='wide', initial_sidebar_state='expanded')
+    st.sidebar.markdown("# aibytech")
+    
+    st.sidebar.image('logo.jpg', width=200)
     st.title("Brain Tumor Classification App")
 
     st.write("""
