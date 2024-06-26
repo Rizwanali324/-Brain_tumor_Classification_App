@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 # Load the pre-trained model
 model = tf.keras.models.load_model('model.h5')
 
+# Define the directory containing subfolders with class names
+base_dir = 'test_images'
+
 # Function to preprocess the image
 def preprocess_image(image):
     size = (256, 256)
@@ -22,9 +25,6 @@ def predict(image):
     image_array = preprocess_image(image)
     predictions = model.predict(image_array)
     return predictions
-
-# Define the directory containing subfolders with class names
-base_dir = 'test_images'
 
 # Function to load and display the first image from each class folder
 def display_first_images(class_folders):
@@ -46,6 +46,9 @@ def display_first_images(class_folders):
 
 # Define Streamlit app
 def main():
+    global base_dir  # Ensure base_dir is global if you intend to access it inside functions
+    global model  # Ensure model is global if you intend to access it inside functions
+    
     # Streamlit app setup
     st.set_page_config(page_title="Brain Tumor Classification", page_icon=":brain:", layout='wide', initial_sidebar_state='expanded')
     st.sidebar.markdown("# aibytech")
@@ -57,6 +60,9 @@ def main():
     This app classifies brain MRI images into one of the following categories:
     The model is trained on the Brain Tumor MRI Dataset, which can be found [here](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset).
     """)
+
+    # Get the list of subfolders (each representing a class)
+    class_folders = [os.path.join(base_dir, folder) for folder in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, folder))]
 
     display_first_images(class_folders)
 
