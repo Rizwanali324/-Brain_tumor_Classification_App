@@ -26,9 +26,6 @@ def predict(image):
 # Define the directory containing subfolders with class names
 base_dir = 'test_images'
 
-# Get the list of subfolders (each representing a class)
-class_folders = [os.path.join(base_dir, folder) for folder in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, folder))]
-
 # Function to load and display the first image from each class folder
 def display_first_images(class_folders):
     num_folders = len(class_folders)
@@ -66,31 +63,35 @@ def main():
     uploaded_file = st.file_uploader("Choose an MRI image...", type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
-        # Display the uploaded image
-        image = Image.open(uploaded_file)
-        st.image(image, caption='Uploaded MRI Image.', width=350)
+        # Display the uploaded image and prediction button in a column layout
+        uploaded_image = Image.open(uploaded_file)
+        col1, col2 = st.columns([2, 1])  # Adjust the width ratio as needed
 
-        # Prediction button
-        if st.button('Predict'):
-            # Get predictions
-            predictions = predict(image)
-            predicted_class_idx = np.argmax(predictions)
+        with col1:
+            st.image(uploaded_image, caption='Uploaded MRI Image.', width=350)
+        
+        with col2:
+            # Prediction button
+            if st.button('Predict'):
+                # Get predictions
+                predictions = predict(uploaded_image)
+                predicted_class_idx = np.argmax(predictions)
 
-            # Define class names (ensure it matches your model's output)
-            class_names = ['Glioma', 'Meningioma', 'No tumor', 'Pituitary']
+                # Define class names (ensure it matches your model's output)
+                class_names = ['Glioma', 'Meningioma', 'No tumor', 'Pituitary']
 
-            # Check if predicted_class_idx is within bounds
-            if 0 <= predicted_class_idx < len(class_names):
-                predicted_class = class_names[predicted_class_idx]
-                st.write(f"Prediction: {predicted_class}")
+                # Check if predicted_class_idx is within bounds
+                if 0 <= predicted_class_idx < len(class_names):
+                    predicted_class = class_names[predicted_class_idx]
+                    st.write(f"Prediction: {predicted_class}")
 
-                # Display caution warning
-                st.warning("""
-                Caution: This app provides predictions based on machine learning models. Use the results as a supplementary tool and consult medical professionals for definitive diagnosis.
-                """)
+                    # Display caution warning
+                    st.warning("""
+                    Caution: This app provides predictions based on machine learning models. Use the results as a supplementary tool and consult medical professionals for definitive diagnosis.
+                    """)
 
-            else:
-                st.write("Invalid prediction index.")
+                else:
+                    st.write("Invalid prediction index.")
 
 if __name__ == "__main__":
     main()
